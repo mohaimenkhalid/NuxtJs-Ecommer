@@ -39,7 +39,7 @@
               :disabled="!valid"
               color="error"
               class="mr-4"
-              @click="validate"
+              @click="setLogin"
             >
               Login
             </v-btn>
@@ -54,27 +54,40 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: 'login',
   data: () => ({
     valid: true,
-    password: '',
-    passwordRules: [
-      v => !!v || 'Password is required',
-    ],
+
     email: '',
     emailRules: [
       v => !!v || 'E-mail is required',
       v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
     ],
-  }),
 
+    password: '',
+    passwordRules: [
+      v => !!v || 'Password is required',
+    ],
+  }),
+  mounted() {
+
+  },
   methods: {
+    ...mapActions("auth", ["login"]),
+    ...mapGetters("auth", ["getIsLoggedIn"]),
     validate() {
-      this.$refs.form.validate()
+      this.$refs.form.validate();
     },
     reset() {
       this.$refs.form.reset()
+    },
+    setLogin() {
+      this.validate();
+      if(this.email !== '' && this.password !== '') {
+          this.login();
+      }
     }
   },
 }
