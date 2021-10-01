@@ -28,9 +28,31 @@
       :clipped-left="clipped"
       fixed
       app
+      class="amber accent-3"
     >
-    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-    <v-toolbar-title v-text="title" />
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title v-text="title" />
+      <v-spacer></v-spacer>
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <div class="mr-8">
+        <v-btn icon>
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+        <v-badge right>
+          <template v-slot:badge>
+            <span>6</span>
+          </template>
+          <v-icon>mdi-cart-outline</v-icon>
+        </v-badge>
+      </div>
+      <n-link to="/user/login">
+        <v-btn color="red" dark>
+        Login
+      </v-btn>
+      </n-link>
     </v-app-bar>
   </div>
 </template>
