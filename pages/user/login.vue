@@ -41,10 +41,10 @@
               class="mr-4"
               @click="setLogin"
             >
-              Login
+              {{ this.is_processing === true ? 'Processing...' : 'Login'}}
             </v-btn>
             <div class="text-center mt-2">
-              Not registered user ? Register
+              Not registered user ? Register {{ this.isAuth }}
             </div>
           </v-form>
         </v-card-text>
@@ -54,12 +54,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 export default {
   name: 'login',
   data: () => ({
     valid: true,
-
     email: '',
     emailRules: [
       v => !!v || 'E-mail is required',
@@ -70,13 +69,20 @@ export default {
     passwordRules: [
       v => !!v || 'Password is required',
     ],
+
   }),
   mounted() {
 
   },
+  computed: {
+    ...mapState({
+      isAuth: state => state.auth.isAuth,
+      is_processing: state => state.auth.is_processing,
+    }),
+  },
   methods: {
-    ...mapActions("auth", ["login"]),
     ...mapGetters("auth", ["getIsLoggedIn"]),
+    ...mapActions("auth", ["login"]),
     validate() {
       this.$refs.form.validate();
     },
@@ -86,7 +92,14 @@ export default {
     setLogin() {
       this.validate();
       if(this.email !== '' && this.password !== '') {
-          this.login();
+        let loginFormData = new FormData();
+        loginFormData.append('email', this.email)
+        loginFormData.append('password', this.password)
+        this.login(loginFormData).then(res => {
+          if(res.data.access_token) {
+            this.$router.replace('/')
+          }
+        })
       }
     }
   },

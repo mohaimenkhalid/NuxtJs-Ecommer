@@ -1,6 +1,7 @@
 export default () => ({
-    LOGIN_IN_PROGRESS: false,
+    is_processing: false,
     isAuth: false,
     token: '',
-    user_info: ''
+    user_info: '',
+
   })
