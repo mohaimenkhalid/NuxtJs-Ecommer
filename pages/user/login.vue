@@ -56,6 +56,7 @@
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
 export default {
+  middleware: 'guest',
   name: 'login',
   data: () => ({
     valid: true,
