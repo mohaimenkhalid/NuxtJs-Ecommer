@@ -59,7 +59,7 @@ export default {
   ],
 
   axios: {
-    // proxy: true
+     proxy: false
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
