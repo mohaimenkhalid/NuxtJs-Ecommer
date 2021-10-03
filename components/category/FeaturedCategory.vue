@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12"><h1 class="text-center">Featured Category List</h1></v-col>
-      <v-col cols="4" v-for="(category, index) in featured_categories">
+      <v-col cols="4" v-for="(category, index) in featured_categories" :key="index">
         <nuxt-link :to="'/category/'+category.slug">
           <v-card class="pa-md-6" elevation="2" color="blue-grey lighten-5">
             <v-list-item-title class="text-h5 mb-1">

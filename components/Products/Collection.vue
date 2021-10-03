@@ -2,10 +2,10 @@
   <v-container>
     <v-row class="mt-4">
       <v-col cols="12">
-        <h1 class="text-center">New Arrival</h1>
+        <h1 class="text-center">Collection Products</h1>
         <p class="text-center">You can choose anything you want</p>
       </v-col>
-      <v-col cols="3" v-for="(product, index) in newArrivalProducts" :key="index">
+      <v-col cols="3" v-for="(product, index) in collection_products" :key="index">
         <nuxt-link :to="'/product/'+product.slug">
           <div class="image-box card">
             <div class="product-card-image">
@@ -30,10 +30,10 @@ import axios from 'axios'
 import AppURL from "@/api/AppURL";
 
 export default {
-  name: "NewArrival",
+  name: "CollectionProduct",
   data() {
     return {
-      newArrivalProducts: []
+      collection_products: []
     }
   },
   mounted() {
@@ -44,9 +44,9 @@ export default {
     }
   },
   async fetch() {
-    await axios.get(AppURL.getProductByRemark, { params: { remark: 3 } })
+    await axios.get(AppURL.getProductByRemark, { params: { remark: 2 } })
       .then(res => {
-        this.newArrivalProducts = res.data
+        this.collection_products = res.data
       })
   },
   fetchKey: 'new-arrival-products',
