@@ -16,10 +16,10 @@
           exact
         >
           <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <!--<v-icon>{{ item.icon }}</v-icon>-->
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
+            <v-list-item-title v-text="item.name" />
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -58,23 +58,39 @@
 </template>
 
 <script>
+import axios from "axios";
+import AppURL from "@/api/AppURL";
+
 export default {
   name: "Navbar",
   data () {
     return {
       drawer: false,
-      items: [
+      /*items: [
         {
           icon: 'mdi-apps',
           title: 'Welcome',
           to: '/'
         },
-      ],
+      ],*/
+      items: [],
       miniVariant: false,
       clipped: false,
       title: 'Vegist'
     }
-  }
+  },
+
+  mounted() {
+    console.log(this.items);
+  },
+
+  async fetch() {
+    await axios.get(AppURL.getAllCategories)
+      .then(res => {
+        this.items = res.data
+      })
+  },
+  fetchKey: 'category-list',
 }
 </script>
 
