@@ -7,7 +7,7 @@
       fixed
       app
     >
-      <v-list>
+     <!-- <v-list>
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
@@ -16,12 +16,47 @@
           exact
         >
           <v-list-item-action>
-            <!--<v-icon>{{ item.icon }}</v-icon>-->
+            &lt;!&ndash;<v-icon>{{ item.icon }}</v-icon>&ndash;&gt;
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title v-text="item.name" />
           </v-list-item-content>
         </v-list-item>
+      </v-list>-->
+
+      <v-list>
+        <v-list-group
+          v-for="item in items"
+          :key="item.id"
+          v-model="item.active"
+          no-action
+          name="item.name"
+        >
+          <template v-slot:activator>
+            <v-list-tile>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </template>
+
+
+          <v-list-group
+            v-for="subItem in item.children"
+            :key="subItem.id"
+            v-model="subItem.active"
+            no-action
+          >
+            <template v-slot:activator>
+              <v-list-tile>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ subItem.name }}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </template>
+          </v-list-group>
+
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
