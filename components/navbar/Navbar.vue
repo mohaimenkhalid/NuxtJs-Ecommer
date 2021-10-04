@@ -2,62 +2,64 @@
   <div>
     <v-navigation-drawer
       v-model="drawer"
-      :mini-variant="miniVariant"
       :clipped="clipped"
       fixed
       app
     >
-     <!-- <v-list>
+      <v-list nav dense>
         <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
+          to="/"
         >
-          <v-list-item-action>
-            &lt;!&ndash;<v-icon>{{ item.icon }}</v-icon>&ndash;&gt;
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.name" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>-->
+          <v-list-item-icon>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-icon>
 
-      <v-list>
+          <v-list-item-title>Home</v-list-item-title>
+        </v-list-item>
+      <!--Main category list-->
         <v-list-group
           v-for="item in items"
+          :value="true"
           :key="item.id"
-          v-model="item.active"
+          prepend-icon="mdi-food-apple"
           no-action
-          name="item.name"
         >
-          <template v-slot:activator>
-            <v-list-tile>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </template>
-
-
-          <v-list-group
-            v-for="subItem in item.children"
-            :key="subItem.id"
-            v-model="subItem.active"
-            no-action
-          >
+        <template v-slot:activator>
+          <v-list-item-title v-on:click="gret">{{item.name}}</v-list-item-title>
+        </template>
+           <!--Sub category item-->
+            <!--if 2nd lvl child available-->
+            <v-list-group
+              v-if="subItem.children.length > 0"
+              v-for="subItem in item.children"
+              :key="subItem.id"
+              :value="true"
+              sub-group
+            >
             <template v-slot:activator>
-              <v-list-tile>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ subItem.name }}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
+              <v-list-item-content>
+                <v-list-item-title>{{subItem.name}}</v-list-item-title>
+              </v-list-item-content>
             </template>
-          </v-list-group>
+                <!--subsubitem category list-->
+                <v-list-item v-for="subSubItem in subItem.children" :key="subSubItem.id" :to="'/category/'+subSubItem.slug">
+                  <v-list-item-icon>
+                    <v-icon></v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-title>{{subSubItem.name}}</v-list-item-title>
+                </v-list-item>
+            </v-list-group>
 
+          <!--if not 2nd lvl child available-->
+            <v-list-item :to="'/category/'+subItem.slug" :key="'2lv-'+subItem.id" v-for="subItem in item.children">
+              <v-list-item-icon>
+                <v-icon></v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{subItem.name}}</v-list-item-title>
+            </v-list-item>
         </v-list-group>
       </v-list>
+
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="clipped"
@@ -109,14 +111,19 @@ export default {
         },
       ],*/
       items: [],
-      miniVariant: false,
-      clipped: false,
-      title: 'Vegist'
+      clipped: true,
+      title: 'Vegist',
     }
   },
 
   mounted() {
-    console.log(this.items);
+
+  },
+
+  methods: {
+    gret() {
+      console.log("asd");
+    }
   },
 
   async fetch() {
@@ -127,8 +134,11 @@ export default {
   },
   fetchKey: 'category-list',
 }
+
 </script>
 
-<style>
-
+<style scoped>
+.v-application--is-ltr .v-list--dense.v-list--nav .v-list-group--no-action > .v-list-group__items > .v-list-item {
+  padding: 0 8px;
+}
 </style>
