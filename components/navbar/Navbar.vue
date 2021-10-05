@@ -25,7 +25,9 @@
           no-action
         >
         <template v-slot:activator>
-          <v-list-item-title v-on:click="gret">{{item.name}}</v-list-item-title>
+          <v-list-item-content v-on:click="linkAction(item.slug)">
+            <v-list-item-title>{{item.name}}</v-list-item-title>
+          </v-list-item-content>
         </template>
            <!--Sub category item-->
             <!--if 2nd lvl child available-->
@@ -36,8 +38,8 @@
               :value="true"
               sub-group
             >
-            <template v-slot:activator>
-              <v-list-item-content>
+            <template v-slot:activator >
+              <v-list-item-content v-on:click="linkAction(subItem.slug)">
                 <v-list-item-title>{{subItem.name}}</v-list-item-title>
               </v-list-item-content>
             </template>
@@ -103,16 +105,9 @@ export default {
   data () {
     return {
       drawer: false,
-      /*items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-      ],*/
       items: [],
       clipped: true,
-      title: 'Vegist',
+      title: 'Vegist Shop',
     }
   },
 
@@ -121,8 +116,8 @@ export default {
   },
 
   methods: {
-    gret() {
-      console.log("asd");
+    linkAction(slug) {
+      this.$router.push('/category/'+slug)
     }
   },
 
