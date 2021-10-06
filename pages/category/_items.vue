@@ -24,19 +24,7 @@
   <v-container v-else>
     <v-row>
       <v-col cols="3" v-for="(product, index) in products" :key="index">
-        <nuxt-link :to="'/product/'+product.slug">
-          <div class="image-box card">
-            <div class="product-card-image">
-              <img :src="imageUrl(product.image)" />
-            </div>
-            <div>
-              <div class="product-card-details">
-                <h5 class='product-name-on-card'>{{product.name}}</h5>
-                <h5 class="product-price-on-card">Price: {{product.price}}Tk</h5>
-              </div>
-            </div>
-          </div>
-        </nuxt-link>
+        <ProductCard :product="product" />
       </v-col>
     </v-row>
   </v-container>
@@ -45,9 +33,11 @@
 <script>
 import axios from "axios";
 import AppURL from "@/api/AppURL";
+import ProductCard from "@/components/Products/ProductCard";
 
 export default {
   name: "Items",
+  components: {ProductCard},
   data() {
     return {
       products: [],
