@@ -31,6 +31,34 @@
           <div v-else>
             <h2>Tk. {{product.price}}</h2>
           </div>
+
+          <v-row>
+            <v-col cols="4" v-if="product.product_details.color">
+              <h6 class="mt-2">Color</h6>
+              <v-select
+                :items="product.product_details.color.split(',')"
+                label="Select Color"
+                dense
+                solo
+              ></v-select>
+            </v-col>
+            <v-col cols="4" v-if="product.product_details.size">
+              <h6 class="mt-2">Size</h6>
+              <v-select
+                :items="product.product_details.size.split(',')"
+                label="Select Size"
+                dense
+                solo
+              ></v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <div class="input-group mt-3 product-button-group">
+                <v-btn>Add To Cart</v-btn>
+              </div>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-card>
