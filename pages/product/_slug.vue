@@ -6,46 +6,57 @@
           <img :src="this.server_base_url+product.image" alt="">
         </v-col>
         <v-col cols="6">
-          <h3 class="Product-Name">{{product.name}}</h3>
+          <h3 class="Product-Name">{{ product.name }}</h3>
           <h5>Availability: <span class="text-success">In stock</span></h5>
 
           <div v-if="product && product.product_details">
             <h6 class="section-sub-title"> product description</h6>
             <p>
-              {{product.product_details.short_description}}
+              {{ product.product_details.short_description }}
             </p>
           </div>
 
           <div class="d-flex align-items-center" v-if="product.category">
             <h6 class="mt-2 mr-2">Category - </h6>
-            <span class="badge badge-info"> {{product.category.name}}</span>
+            <span class="badge badge-info"> {{ product.category.name }}</span>
           </div>
 
           <div v-if="product.special_price">
-            <h3><del>Tk. {{product.price}}</del></h3>
+            <h3>
+              <del>Tk. {{ product.price }}</del>
+            </h3>
             <div class="d-flex align-items-center">
-              <h2>Tk. {{product.special_price}}</h2>
-              <small> You Save TK. {{product.price - product.special_price}}</small>
+              <h2>Tk. {{ product.special_price }}</h2>
+              <small> You Save TK. {{ product.price - product.special_price }}</small>
             </div>
           </div>
           <div v-else>
-            <h2>Tk. {{product.price}}</h2>
+            <h2>Tk. {{ product.price }}</h2>
           </div>
-
           <v-row>
-            <v-col cols="4" v-if="product.product_details.color">
+            <v-col cols="4">
+              <h6 class="mt-2">Choose Quantity</h6>
+              <v-text-field
+                value="1"
+                placeholder="quantity"
+                solo
+                dense
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="4" v-if="product.product_details">
               <h6 class="mt-2">Color</h6>
               <v-select
-                :items="product.product_details.color.split(',')"
+                :items="product.product_details.color !== null && product.product_details.color.split(',')"
                 label="Select Color"
                 dense
                 solo
               ></v-select>
             </v-col>
-            <v-col cols="4" v-if="product.product_details.size">
+            <v-col cols="4" v-if="product.product_details">
               <h6 class="mt-2">Size</h6>
               <v-select
-                :items="product.product_details.size.split(',')"
+                :items="product.product_details.size !== null && product.product_details.size.split(',')"
                 label="Select Size"
                 dense
                 solo
@@ -54,8 +65,19 @@
           </v-row>
           <v-row>
             <v-col cols="12">
-              <div class="input-group mt-3 product-button-group">
-                <v-btn>Add To Cart</v-btn>
+              <div class="mt-3">
+                <v-btn class="mr-2">
+                  <v-fade-transition leave-absolute>
+                    <v-progress-circular
+                      v-if="loading"
+                      size="20"
+                      color="info"
+                      indeterminate
+                    ></v-progress-circular>
+                  </v-fade-transition>
+                  Add To Cart
+                </v-btn>
+                <v-btn>Add To favourite</v-btn>
               </div>
             </v-col>
           </v-row>
