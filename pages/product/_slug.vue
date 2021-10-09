@@ -37,16 +37,18 @@
             <v-col cols="4">
               <h6 class="mt-2">Choose Quantity</h6>
               <v-text-field
-                value="1"
+                v-model="quantity"
                 placeholder="quantity"
                 solo
                 dense
+                :rules="quantityRules"
                 required
               ></v-text-field>
             </v-col>
             <v-col cols="4" v-if="product.product_details">
               <h6 class="mt-2">Color</h6>
               <v-select
+                v-model="product_color"
                 :items="product.product_details.color !== null && product.product_details.color.split(',')"
                 label="Select Color"
                 dense
@@ -56,6 +58,7 @@
             <v-col cols="4" v-if="product.product_details">
               <h6 class="mt-2">Size</h6>
               <v-select
+                v-model="product_size"
                 :items="product.product_details.size !== null && product.product_details.size.split(',')"
                 label="Select Size"
                 dense
@@ -66,10 +69,12 @@
           <v-row>
             <v-col cols="12">
               <div class="mt-3">
-                <v-btn class="mr-2">
+                <v-btn class="mr-2"
+                       @click="addToCart()"
+                       :disabled="this.quantity < 1 || this.quantity=== '' "
+                >
                   <v-fade-transition leave-absolute>
                     <v-progress-circular
-                      v-if="loading"
                       size="20"
                       color="info"
                       indeterminate
@@ -90,21 +95,48 @@
 <script>
 import axios from "axios";
 import AppURL from "@/api/AppURL";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 export default {
   name: "ProductDetails",
   data() {
     return {
-      server_base_url: AppURL.ServerBaseURL
+      server_base_url: AppURL.ServerBaseURL,
+      quantity: 1,
+      product_color: '',
+      product_size: '',
+      valid: false,
+      quantityRules: [
+        v => !!v || 'Quantity is required',
+        v => v > 0 || 'Quantity not less than 1',
+      ],
     }
   },
   mounted() {
 
   },
+  methods: {
+    ...mapActions("cart", ["setCart"]),
+
+    addToCart() {
+      let product = {
+        'product_id' : this.product.id,
+        'name' : this.product.name,
+        'image' : this.product.image,
+        'price' : this.product.price,
+        'subtotal' : this.product.price * this.quantity,
+        'description' : this.product.product_details ? this.product.product_details.short_description : '',
+        'quantity' : this.quantity,
+        'product_color' : this.product_color,
+        'product_size' : this.product_size,
+      }
+      this.setCart(product)
+      //console.log(product)
+    }
+  },
   async asyncData({params}) {
     return await axios.get(AppURL.getProductDetails(params.slug))
       .then(response => {
-        console.log(response)
         return {
           product: response.data
         }
