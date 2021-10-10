@@ -130,7 +130,9 @@ export default {
         'product_color' : this.product_color,
         'product_size' : this.product_size,
       }
-      this.setCart(product)
+      this.setCart(product).then((res) => {
+        console.log("Added")
+      })
       //console.log(product)
     }
   },
