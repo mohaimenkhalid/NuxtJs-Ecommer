@@ -42,6 +42,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/toast',
     [
       'nuxt-fontawesome', {
       imports: [
@@ -57,6 +58,22 @@ export default {
     }
     ],
   ],
+
+  toast: {
+    position: 'bottom-left',
+    duration : 5000,
+    theme: "bubble",
+    closeOnSwipe: true,
+    register: [ // Register custom toasts
+      {
+        name: 'my-error',
+        message: 'Oops...Something went wrong',
+        options: {
+          type: 'error'
+        }
+      }
+    ]
+  },
 
   axios: {
      proxy: false

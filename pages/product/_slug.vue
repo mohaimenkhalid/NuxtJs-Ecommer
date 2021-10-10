@@ -131,7 +131,7 @@ export default {
         'product_size' : this.product_size,
       }
       this.setCart(product).then((res) => {
-        console.log("Added")
+        this.$toast.success('Product added successfully your cart')
       })
       //console.log(product)
     }
