@@ -3,7 +3,7 @@ export const IN_PROCESSING = (state, payload) => {
 }
 
 export const SET_CART = (state, payload) => {
-  console.log(state.totalPrice)
+  console.log(state.items)
   let product = payload;
   let cart = state.items;
   var dataCart = cart !== null ? cart : [];
