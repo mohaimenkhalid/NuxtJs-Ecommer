@@ -80,12 +80,17 @@
         <v-btn icon>
           <v-icon>mdi-heart</v-icon>
         </v-btn>
-        <v-badge right>
-          <template v-slot:badge>
-            <span>6</span>
-          </template>
-          <v-icon>mdi-cart-outline</v-icon>
-        </v-badge>
+
+        <n-link to="/cart">
+          <v-btn icon>
+            <v-badge right>
+              <template v-slot:badge>
+                <span>{{getCart().length}}</span>
+              </template>
+              <v-icon>mdi-cart-outline</v-icon>
+            </v-badge>
+          </v-btn>
+        </n-link>
       </div>
       <n-link to="/user/login">
         <v-btn color="red" dark>
@@ -99,6 +104,7 @@
 <script>
 import axios from "axios";
 import AppURL from "@/api/AppURL";
+import {mapGetters} from "vuex";
 
 export default {
   name: "Navbar",
@@ -116,6 +122,7 @@ export default {
   },
 
   methods: {
+    ...mapGetters("cart", ["getCart"]),
     linkAction(slug) {
       this.$router.push('/category/'+slug)
     }

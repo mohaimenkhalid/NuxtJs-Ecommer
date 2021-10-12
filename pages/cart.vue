@@ -1,9 +1,12 @@
 <template>
-  <v-container>
-    <h2 class="text-center">Your Shopping Cart </h2>
+  <v-container class="min-h-100">
+    <h2 class="text-center my-5">Your Shopping Cart </h2>
     <v-row>
       <v-col cols="12">
-        <v-simple-table>
+        <div class="text-center mt-5" v-if="getCart().length < 1">
+          <img src="../assets/images/cart-empty.png" width="400" alt="">
+        </div>
+        <v-simple-table v-else>
           <template v-slot:default>
             <thead>
             <tr>
@@ -30,11 +33,11 @@
                 <td>{{ item.price }}</td>
                 <td>
                   <div class="d-flex">
-                    <v-btn x-small color="primary" fab>
+                    <v-btn x-small color="" fab @click="updateCartProduct(item.product_id, 'decrement')">
                       <v-icon>mdi-minus</v-icon>
                     </v-btn>
-                    {{ item.quantity }}
-                    <v-btn x-small color="primary" fab >
+                    <div class="mx-2 mt-1">{{ item.quantity }}</div>
+                    <v-btn x-small color="" fab  @click="updateCartProduct(item.product_id, 'increment')">
                       <v-icon>mdi-plus</v-icon>
                     </v-btn>
                   </div>
@@ -46,6 +49,7 @@
                     fab
                     x-small
                     dark
+                    @click="deleteCartProduct(item.product_id)"
                   >
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
@@ -72,9 +76,19 @@ export default {
   },
   methods: {
     ...mapGetters("cart", ["getCart"]),
+    ...mapActions("cart", ["updateCart", "deleteCart"]),
 
     imageUrl(url) {
       return AppURL.ServerBaseURL + url;
+    },
+    updateCartProduct(productId, type){
+      this.updateCart({productId, type})
+    },
+
+    deleteCartProduct(productId) {
+      this.deleteCart(productId).then((res) => {
+        this.$toast.error('Product removed from cart.')
+      })
     }
   }
 }

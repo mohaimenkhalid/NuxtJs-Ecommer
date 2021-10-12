@@ -6,6 +6,17 @@ export const setCart = ({ commit }, product) => {
   })
 }
 
+export const updateCart = ({commit}, payload) => {
+  commit('SET_UPDATE_CART', payload)
+}
+
+export const deleteCart = ({commit}, productId) => {
+  return new Promise((resolve, reject) => {
+    commit("DELETE_CART", productId)
+    resolve();
+  })
+}
+
 export const setCollapse = () => {
 
 }

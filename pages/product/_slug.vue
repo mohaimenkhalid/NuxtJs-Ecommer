@@ -73,13 +73,6 @@
                        @click="addToCart()"
                        :disabled="this.quantity < 1 || this.quantity=== '' "
                 >
-                  <v-fade-transition leave-absolute>
-                    <v-progress-circular
-                      size="20"
-                      color="info"
-                      indeterminate
-                    ></v-progress-circular>
-                  </v-fade-transition>
                   Add To Cart
                 </v-btn>
                 <v-btn>Add To favourite</v-btn>
