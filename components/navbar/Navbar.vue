@@ -16,7 +16,7 @@
 
           <v-list-item-title>Home</v-list-item-title>
         </v-list-item>
-      <!--Main category list-->
+        <!--Main category list-->
         <v-list-group
           v-for="item in items"
           :value="true"
@@ -24,41 +24,41 @@
           prepend-icon="mdi-food-apple"
           no-action
         >
-        <template v-slot:activator>
-          <v-list-item-content v-on:click="linkAction(item.slug)">
-            <v-list-item-title>{{item.name}}</v-list-item-title>
-          </v-list-item-content>
-        </template>
-           <!--Sub category item-->
-            <!--if 2nd lvl child available-->
-            <v-list-group
-              v-if="subItem.children.length > 0"
-              v-for="subItem in item.children"
-              :key="subItem.id"
-              :value="true"
-              sub-group
-            >
-            <template v-slot:activator >
+          <template v-slot:activator>
+            <v-list-item-content v-on:click="linkAction(item.slug)">
+              <v-list-item-title>{{ item.name }}</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <!--Sub category item-->
+          <!--if 2nd lvl child available-->
+          <v-list-group
+            v-if="subItem.children.length > 0"
+            v-for="subItem in item.children"
+            :key="subItem.id"
+            :value="true"
+            sub-group
+          >
+            <template v-slot:activator>
               <v-list-item-content v-on:click="linkAction(subItem.slug)">
-                <v-list-item-title>{{subItem.name}}</v-list-item-title>
+                <v-list-item-title>{{ subItem.name }}</v-list-item-title>
               </v-list-item-content>
             </template>
-                <!--subsubitem category list-->
-                <v-list-item v-for="subSubItem in subItem.children" :key="subSubItem.id" :to="'/category/'+subSubItem.slug">
-                  <v-list-item-icon>
-                    <v-icon></v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-title>{{subSubItem.name}}</v-list-item-title>
-                </v-list-item>
-            </v-list-group>
-
-          <!--if not 2nd lvl child available-->
-            <v-list-item :to="'/category/'+subItem.slug" :key="'2lv-'+subItem.id" v-for="subItem in item.children">
+            <!--subsubitem category list-->
+            <v-list-item v-for="subSubItem in subItem.children" :key="subSubItem.id" :to="'/category/'+subSubItem.slug">
               <v-list-item-icon>
                 <v-icon></v-icon>
               </v-list-item-icon>
-              <v-list-item-title>{{subItem.name}}</v-list-item-title>
+              <v-list-item-title>{{ subSubItem.name }}</v-list-item-title>
             </v-list-item>
+          </v-list-group>
+
+          <!--if not 2nd lvl child available-->
+          <v-list-item :to="'/category/'+subItem.slug" :key="'2lv-'+subItem.id" v-for="subItem in item.children">
+            <v-list-item-icon>
+              <v-icon></v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>{{ subItem.name }}</v-list-item-title>
+          </v-list-item>
         </v-list-group>
       </v-list>
 
@@ -69,8 +69,8 @@
       app
       class="amber accent-3"
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
+      <v-toolbar-title v-text="title"/>
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
@@ -85,17 +85,37 @@
           <v-btn icon>
             <v-badge right>
               <template v-slot:badge>
-                <span>{{getCart().length}}</span>
+                <span>{{ getCart().length }}</span>
               </template>
               <v-icon>mdi-cart-outline</v-icon>
             </v-badge>
           </v-btn>
         </n-link>
       </div>
-      <n-link to="/user/login">
+
+      <v-menu offset-y open-on-hover v-if="isAuth">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            elevation="2"
+            v-bind="attrs"
+            v-on="on"
+          > {{ user_info.first_name }}
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-list-item-title>Profile</v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <nuxt-link to="/"><v-list-item-title>Logout</v-list-item-title></nuxt-link>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <n-link to="/user/login" v-else>
         <v-btn color="red" dark>
-        Login
-      </v-btn>
+          Login
+        </v-btn>
       </n-link>
     </v-app-bar>
   </div>
@@ -104,11 +124,11 @@
 <script>
 import axios from "axios";
 import AppURL from "@/api/AppURL";
-import {mapGetters} from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 export default {
   name: "Navbar",
-  data () {
+  data() {
     return {
       drawer: false,
       items: [],
@@ -124,8 +144,15 @@ export default {
   methods: {
     ...mapGetters("cart", ["getCart"]),
     linkAction(slug) {
-      this.$router.push('/category/'+slug)
+      this.$router.push('/category/' + slug)
     }
+  },
+
+  computed: {
+    ...mapState({
+      user_info: state => state.auth.user_info,
+      isAuth: state => state.auth.isAuth
+    }),
   },
 
   async fetch() {

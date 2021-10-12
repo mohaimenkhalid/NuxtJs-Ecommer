@@ -97,6 +97,7 @@ export default {
         loginFormData.append('email', this.email)
         loginFormData.append('password', this.password)
         this.login(loginFormData).then(res => {
+          console.log(res)
           if(res.data.access_token) {
             this.$router.replace('/')
           }
