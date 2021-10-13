@@ -12,8 +12,8 @@ export const SET_CART = (state, payload) => {
   if (dataCart.length === 0 || !findCartItem) {
     dataCart.push(product)
   } else if (findCartItem) {
-    product.subtotal += parseInt(findCartItem.subtotal)
-    product.quantity += parseInt(findCartItem.quantity)
+    product.subtotal = parseInt(product.subtotal) + parseInt(findCartItem.subtotal)
+    product.quantity = parseInt(product.quantity) + parseInt(findCartItem.quantity)
     dataCart.splice(
       dataCart.findIndex((p) => p.product_id === product.product_id),
       1,

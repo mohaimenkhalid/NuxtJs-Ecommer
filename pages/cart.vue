@@ -13,7 +13,7 @@
               <th class="text-left"></th>
               <th class="text-left">product Name</th>
               <th class="text-left">Price</th>
-              <th class="text-left">Quantity</th>
+              <th class="text-center">Quantity</th>
               <th class="text-left">Subtotal</th>
               <th class="text-left">Action</th>
             </tr>
@@ -56,8 +56,25 @@
                 </td>
               </tr>
             </tbody>
+            <tbody>
+              <tr>
+                <td colspan="3"></td>
+                <td><h3>Total</h3></td>
+                <td><h3>{{ getTotalPrice() }}</h3></td>
+              </tr>
+            </tbody>
           </template>
         </v-simple-table>
+        <v-row class="mt-5">
+          <v-col cols="auto" class="mr-auto">
+            <v-btn color="warning" >Continue Shopping</v-btn>
+          </v-col>
+          <v-col cols="auto">
+            <nuxt-link to="/checkout">
+              <v-btn color="success">Continue Shopping</v-btn>
+            </nuxt-link>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
@@ -75,7 +92,7 @@ export default {
     }
   },
   methods: {
-    ...mapGetters("cart", ["getCart"]),
+    ...mapGetters("cart", ["getCart", "getTotalPrice"]),
     ...mapActions("cart", ["updateCart", "deleteCart"]),
 
     imageUrl(url) {

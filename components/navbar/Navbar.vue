@@ -32,7 +32,7 @@
           <!--Sub category item-->
           <!--if 2nd lvl child available-->
           <v-list-group
-            v-if="subItem.children.length > 0"
+            v-if="subItem.children.length > 0"c
             v-for="subItem in item.children"
             :key="subItem.id"
             :value="true"
