@@ -24,7 +24,7 @@
                 :key="item.name"
               >
                 <td>
-                  <img :src="imageUrl(item.image)" width="80">
+                  <img :src="imageUrl(item.image)" width="80" alt="">
                 </td>
                 <td>
                   <strong>{{ item.name }}</strong> <br/>
@@ -71,7 +71,7 @@
           </v-col>
           <v-col cols="auto">
             <nuxt-link to="/checkout">
-              <v-btn color="success">Continue Shopping</v-btn>
+              <v-btn color="success">Checkout</v-btn>
             </nuxt-link>
           </v-col>
         </v-row>
