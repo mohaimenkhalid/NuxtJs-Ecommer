@@ -4,21 +4,25 @@
     <v-row>
       <v-col cols="12">
         <div class="text-center mt-5" v-if="getCart().length < 1">
-          <img src="../assets/images/cart-empty.png" width="400" alt="">
+          <img src="../assets/images/cart-empty.png" width="400" alt=""> <br />
+          <nuxt-link to="/">
+            <v-btn color="warning">Continue Shopping</v-btn>
+          </nuxt-link>
         </div>
-        <v-simple-table v-else>
-          <template v-slot:default>
-            <thead>
-            <tr>
-              <th class="text-left"></th>
-              <th class="text-left">product Name</th>
-              <th class="text-left">Price</th>
-              <th class="text-center">Quantity</th>
-              <th class="text-left">Subtotal</th>
-              <th class="text-left">Action</th>
-            </tr>
-            </thead>
-            <tbody>
+        <div v-else>
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+              <tr>
+                <th class="text-left"></th>
+                <th class="text-left">product Name</th>
+                <th class="text-left">Price</th>
+                <th class="text-center">Quantity</th>
+                <th class="text-left">Subtotal</th>
+                <th class="text-left">Action</th>
+              </tr>
+              </thead>
+              <tbody>
               <tr
                 v-for="item in getCart()"
                 :key="item.name"
@@ -37,7 +41,7 @@
                       <v-icon>mdi-minus</v-icon>
                     </v-btn>
                     <div class="mx-2 mt-1">{{ item.quantity }}</div>
-                    <v-btn x-small color="" fab  @click="updateCartProduct(item.product_id, 'increment')">
+                    <v-btn x-small color="" fab @click="updateCartProduct(item.product_id, 'increment')">
                       <v-icon>mdi-plus</v-icon>
                     </v-btn>
                   </div>
@@ -55,26 +59,29 @@
                   </v-btn>
                 </td>
               </tr>
-            </tbody>
-            <tbody>
+              </tbody>
+              <tbody>
               <tr>
                 <td colspan="3"></td>
                 <td><h3>Total</h3></td>
                 <td><h3>{{ getTotalPrice() }}</h3></td>
               </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-        <v-row class="mt-5">
-          <v-col cols="auto" class="mr-auto">
-            <v-btn color="warning" >Continue Shopping</v-btn>
-          </v-col>
-          <v-col cols="auto">
-            <nuxt-link to="/checkout">
-              <v-btn color="success">Checkout</v-btn>
-            </nuxt-link>
-          </v-col>
-        </v-row>
+              </tbody>
+            </template>
+          </v-simple-table>
+          <v-row class="mt-5">
+            <v-col cols="auto" class="mr-auto">
+              <nuxt-link to="/">
+                <v-btn color="warning">Continue Shopping</v-btn>
+              </nuxt-link>
+            </v-col>
+            <v-col cols="auto">
+              <nuxt-link to="/checkout">
+                <v-btn color="success">Checkout</v-btn>
+              </nuxt-link>
+            </v-col>
+          </v-row>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -98,7 +105,7 @@ export default {
     imageUrl(url) {
       return AppURL.ServerBaseURL + url;
     },
-    updateCartProduct(productId, type){
+    updateCartProduct(productId, type) {
       this.updateCart({productId, type})
     },
 

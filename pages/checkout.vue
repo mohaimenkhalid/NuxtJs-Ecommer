@@ -180,6 +180,7 @@ import AppURL from "@/api/AppURL";
 import axios from "axios";
 
 export default {
+middleware: 'cart',
 name: "checkout",
   data() {
     return {

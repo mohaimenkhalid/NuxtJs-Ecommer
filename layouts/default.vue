@@ -2,7 +2,8 @@
   <v-app>
     <Navbar />
     <v-main>
-      <Nuxt />
+      <nuxt v-if="!$slots.default" />
+      <slot />
     </v-main>
     <Footer />
   </v-app>
