@@ -3,5 +3,4 @@ export default () => ({
     isAuth: false,
     token: '',
     user_info: '',
-
   })

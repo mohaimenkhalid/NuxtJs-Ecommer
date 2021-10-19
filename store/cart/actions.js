@@ -17,6 +17,6 @@ export const deleteCart = ({commit}, productId) => {
   })
 }
 
-export const setCollapse = () => {
-
+export const removeCart = ({ commit }) => {
+  commit('REMOVE_CART')
 }

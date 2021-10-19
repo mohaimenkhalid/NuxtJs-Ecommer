@@ -76,3 +76,8 @@ export const DELETE_CART = (state, productId) => {
     }, 0);
   }
 }
+
+export const REMOVE_CART = (state) => {
+  state.items = [];
+  state.totalPrice = 0;
+}

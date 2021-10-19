@@ -12,17 +12,19 @@
                 <v-col cols="6">
                   <v-text-field
                     solo
-                    v-model="name"
+                    v-model="full_name"
                     label="Name"
                     required
+                    :rules="fullNameRules"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="6">
                   <v-text-field
                     solo
-                    v-model="phone"
+                    v-model="phone_no"
                     label="Phone No."
                     required
+                    :rules="phoneNoRules"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -32,12 +34,13 @@
                 </v-col>
                 <v-col cols="4">
                   <v-select
-                    v-model="product_size"
+                    v-model="region"
                     :items="regionList"
                     item-text="name"
                     item-value="value"
                     label="Select Region"
                     solo
+                    :rules="regionRules"
                   ></v-select>
                 </v-col>
                 <v-col cols="4">
@@ -46,6 +49,7 @@
                     v-model="city"
                     label="Enter your city"
                     required
+                    :rules="cityRules"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="4">
@@ -54,14 +58,16 @@
                     v-model="area"
                     label="Enter your area"
                     required
+                    :rules="areaRules"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
                     solo
-                    v-model="area"
+                    v-model="address"
                     label="Enter Your Address"
                     required
+                    :rules="addressRules"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -75,10 +81,10 @@
                       label="Cash on delivery"
                       value="cash_on_delivery"
                     ></v-radio>
-                    <v-radio
+                   <!-- <v-radio
                       label="Pay with Stripe"
                       value="pay_with_stripe"
-                    ></v-radio>
+                    ></v-radio>-->
                   </v-radio-group>
                 </v-col>
               </v-row>
@@ -154,7 +160,11 @@
                 card details
               </div>
 
-              <v-btn color="error" block class="mt-12">
+              <v-btn color="error" block
+                     class="mt-12"
+                     @click="this.confirmOrder"
+                     :disabled="this.validate() === false"
+              >
                 Confirm Order
               </v-btn>
             </v-card-text>
@@ -165,8 +175,9 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters, mapState, mapActions} from "vuex";
 import AppURL from "@/api/AppURL";
+import axios from "axios";
 
 export default {
 name: "checkout",
@@ -182,15 +193,91 @@ name: "checkout",
           name: 'Mymensingh',
           value: 'mymensingh',
         }
-      ]
+      ],
+      full_name: '',
+      phone_no: '',
+      region: '',
+      city: '',
+      area: '',
+      address: '',
+      fullNameRules: [ v => !!v || 'Name is required',],
+      phoneNoRules: [ v => !!v || 'Phone No is required',],
+      regionRules: [ v => !!v || 'Region is required',],
+      cityRules: [ v => !!v || 'City is required',],
+      areaRules: [ v => !!v || 'Area is required',],
+      addressRules: [ v => !!v || 'Address is required',],
     }
+  },
+  computed: {
+    ...mapState({
+      token: state => state.auth.token,
+    }),
   },
   methods: {
     ...mapGetters("cart", ["getCart", "getTotalPrice"]),
+    ...mapActions("cart", ["removeCart"]),
 
     imageUrl(url) {
       return AppURL.ServerBaseURL + url;
     },
+
+    validate() {
+      if(this.full_name === ''
+        || this.phone_no === ''
+        || this.region === ''
+        || this.city === ''
+        || this.area === ''
+        || this.address === ''
+        || this.payment_type === ''
+      ) {
+        return false;
+      }
+    },
+
+    confirmOrder() {
+      console.log(this.token)
+      let totalPrice = this.getTotalPrice();
+      let full_name = this.full_name;
+      let phone_no = this.phone_no;
+      let region = this.region;
+      let city = this.city;
+      let area = this.area;
+      let address = this.address;
+      let payment_type = this.payment_type;
+
+      let orderFormData = new FormData();
+      orderFormData.append('total_amount', totalPrice);
+      orderFormData.append('full_name', full_name);
+      orderFormData.append('phone_no', phone_no);
+      orderFormData.append('region', region);
+      orderFormData.append('city', city);
+      orderFormData.append('area', area);
+      orderFormData.append('address', address);
+      orderFormData.append('payment_type', payment_type);
+      orderFormData.append('carts', JSON.stringify(this.getCart()));
+
+      const headers = {
+        'Content-Type' : 'application/json',
+        'Accept' : 'application/json',
+        'Authorization' : `Bearer ${this.token}`
+      };
+
+      axios.post(AppURL.placeOrder, orderFormData, {headers: headers})
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200 && res.data) {
+            this.removeCart();
+            this.$toast.error('Order placed successfully.')
+            this.$router.replace('/')
+          } else {
+            this.$toast.error('Something went wrong!')
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+
+    }
   }
 }
 </script>
