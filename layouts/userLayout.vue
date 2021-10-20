@@ -23,19 +23,20 @@
                 dense
                 nav
               >
-                <v-list-item
+                <nuxt-link
                   v-for="item in items"
                   :key="item.title"
-                  link
-                >
-                  <v-list-item-icon>
-                    <v-icon>{{ item.icon }}</v-icon>
-                  </v-list-item-icon>
+                  :to="'/user/'+item.link">
+                  <v-list-item link>
+                    <v-list-item-icon>
+                      <v-icon>{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
 
-                  <v-list-item-content>
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </nuxt-link>
               </v-list>
             </v-navigation-drawer>
           </v-card>
@@ -58,9 +59,9 @@ export default {
   data () {
     return {
       items: [
-        { title: 'Dashboard', icon: 'mdi-view-dashboard' },
-        { title: 'Profile', icon: 'mdi-image' },
-        { title: 'Orders', icon: 'mdi-help-box' },
+        { title: 'Dashboard', link: 'dashboard', icon: 'mdi-view-dashboard' },
+        { title: 'Profile', link: 'profile', icon: 'mdi-image' },
+        { title: 'Orders', link: 'orders', icon: 'mdi-help-box' },
       ],
       right: null,
     }
