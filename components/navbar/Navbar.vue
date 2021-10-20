@@ -103,12 +103,21 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item>
-            <v-list-item-title>Profile</v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <nuxt-link to="/"><v-list-item-title>Logout</v-list-item-title></nuxt-link>
-          </v-list-item>
+          <nuxt-link to="/user/profile">
+            <v-list-item>
+              <v-list-item-title>Profile</v-list-item-title>
+            </v-list-item>
+          </nuxt-link>
+          <nuxt-link to="/user/orders">
+            <v-list-item>
+              <v-list-item-title>Orders</v-list-item-title>
+            </v-list-item>
+          </nuxt-link>
+          <nuxt-link to="/">
+            <v-list-item>
+              <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item>
+          </nuxt-link>
         </v-list>
       </v-menu>
 

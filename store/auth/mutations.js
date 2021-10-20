@@ -11,5 +11,6 @@ export const SET_TOKEN = (state, payload) => {
 }
 
 export const SET_USER_INFO = (state, payload) => {
+  console.log(payload);
   state.user_info = payload;
 }

@@ -21,3 +21,21 @@ export const login = ({ commit }, formData) => {
   })
 
 }
+
+export const setUser = ({commit, state}, formData) => {
+  const headers = {
+    'Accept' : 'application/json',
+    "Content-Type": "multipart/form-data",
+    'Authorization' : `Bearer ${state.token}`
+  };
+  return new Promise((resolve, reject) => {
+      return axios.post(AppURL.updateProfile, formData, {headers: headers})
+        .then(res => {
+          console.log(res.data.user)
+          commit('SET_USER_INFO', res.data.user)
+          resolve(res);
+        })
+        .catch()
+  });
+
+}

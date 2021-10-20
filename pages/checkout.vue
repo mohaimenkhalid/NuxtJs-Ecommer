@@ -210,9 +210,7 @@ name: "checkout",
     }
   },
   computed: {
-    ...mapState({
-      token: state => state.auth.token,
-    }),
+    c
   },
   methods: {
     ...mapGetters("cart", ["getCart", "getTotalPrice"]),

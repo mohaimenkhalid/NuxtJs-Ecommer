@@ -18,31 +18,34 @@
               </v-list-item>
 
               <v-divider></v-divider>
-
               <v-list
                 dense
                 nav
               >
-                <nuxt-link
-                  v-for="item in items"
-                  :key="item.title"
-                  :to="'/user/'+item.link">
-                  <v-list-item link>
-                    <v-list-item-icon>
-                      <v-icon>{{ item.icon }}</v-icon>
-                    </v-list-item-icon>
+                <v-list-item-group
+                  active-class="deep-purple--text text--accent-4"
+                >
+                  <nuxt-link
+                    v-for="item in items"
+                    :key="item.title"
+                    :to="'/user/'+item.link">
+                    <v-list-item link>
+                      <v-list-item-icon>
+                        <v-icon>{{ item.icon }}</v-icon>
+                      </v-list-item-icon>
 
-                    <v-list-item-content>
-                      <v-list-item-title>{{ item.title }}</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </nuxt-link>
+                      <v-list-item-content>
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </nuxt-link>
+                </v-list-item-group>
               </v-list>
             </v-navigation-drawer>
           </v-card>
         </v-col>
         <v-col cols="8">
-          <nuxt />
+          <nuxt/>
         </v-col>
       </v-row>
     </v-container>
@@ -56,12 +59,12 @@ export default {
   components: {
     defaultLayout,
   },
-  data () {
+  data() {
     return {
       items: [
-        { title: 'Dashboard', link: 'dashboard', icon: 'mdi-view-dashboard' },
-        { title: 'Profile', link: 'profile', icon: 'mdi-image' },
-        { title: 'Orders', link: 'orders', icon: 'mdi-help-box' },
+        {title: 'Dashboard', link: 'dashboard', icon: 'mdi-view-dashboard'},
+        {title: 'Profile', link: 'profile', icon: 'mdi-image'},
+        {title: 'Orders', link: 'orders', icon: 'mdi-help-box'},
       ],
       right: null,
     }
