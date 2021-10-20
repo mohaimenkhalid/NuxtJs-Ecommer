@@ -2,8 +2,7 @@
   <v-card>
     <v-card-text>
       <h1>Order List</h1>
-
-      <v-simple-table dense>
+      <v-simple-table>
         <template v-slot:default>
           <thead>
           <tr>
@@ -31,7 +30,7 @@
           <tr v-for="order in myOrders.data">
             <td>{{ order.invoice_number }}</td>
             <td>
-
+              {{ order.created_at }}
             </td>
             <td>{{ order.shipping_address ? order.shipping_address.full_name : '' }}</td>
             <td>{{ order.total_amount }}</td>
@@ -41,12 +40,20 @@
                 </span>
             </td>
             <td>
-              <!-- <Link to={'/my-account/orders/' + order.id}
+              <!-- <a to={'/my-account/orders/' + order.id}
                      class="btn btn-info btn-sm">
                  <i class="fa fa-eye"/>
                  <span class='ml-1'>View</span>
                </Link>-->
-              View
+              <nuxt-link :to="'/user/orders/'+order.id">
+                <v-btn
+                  color="info"
+                  x-small
+                >
+                  View
+                </v-btn>
+              </nuxt-link>
+
             </td>
           </tr>
           </tbody>
@@ -54,14 +61,14 @@
       </v-simple-table>
       <div class="text-center">
         <div class="pagination">
-          <button
+          <v-btn
             v-for="link in myOrders.links"
             @click="getPaginationOrder(link.url)"
             :class="link.active ? 'active': ''"
-            :disabled="link.url === null || link.active"
+            :disabled="link.url === null"
           >
-            {{ link.label }}
-          </button>
+            <span v-html="link.label"></span>
+          </v-btn>
         </div>
       </div>
     </v-card-text>
@@ -145,9 +152,9 @@ export default {
 }
 
 .pagination button.active {
-  background-color: #4CAF50;
-  color: white;
-  border: 1px solid #4CAF50;
+  background-color: #4496f3 !important;
+  color: white !important;
+  border: 0;
 }
 
 .pagination button:hover:not(.active) {
